@@ -1,16 +1,18 @@
+# Statistical Inference Course Project
+## Overview
+This is a Coursera Statistical Inference project in which the aim is to compare the exponential distribution with lambda = 0.2 and compare it against the Central Limit Theorem using 1000 simulations of the averages of 40 exponentials.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials.  You should
+1. Show the sample mean and compare it to the theoretical mean of the distribution.
+2. Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
+3. Show that the distribution is approximately normal.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+In point 3, focus on the difference between the distribution of a large collection of random exponentials and the distribution of a large collection of averages of 40 exponentials. 
 
-```{r}
-summary(cars)
-```
+## Simulations
 
-You can also embed plots, for example:
+## Sample Means vs. Theoretical Means
 
-```{r, echo=FALSE}
-plot(cars)
-```
+## Sample Variance vs. Theoretical Variance
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Distribution

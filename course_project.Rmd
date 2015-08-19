@@ -9,7 +9,17 @@ Illustrate via simulation and associated explanatory text the properties of the 
 
 In point 3, focus on the difference between the distribution of a large collection of random exponentials and the distribution of a large collection of averages of 40 exponentials. 
 
-## Simulations
+## Setting up the Simulations
+```{r message=FALSE}
+library(ggplot2)
+
+set.seed(1234)
+nosim <- 1000        
+sampleSize <- 40 
+lambda <- 0.2   
+dist <- matrix(rexp(sampleSize * nosim, rate = lambda), ncol = sampleSize, nrow=nosim)
+dist.means <- rowMeans(dist) 
+```
 
 ## Sample Means vs. Theoretical Means
 

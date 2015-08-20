@@ -1,0 +1,41 @@
+---
+output: html_document
+---
+### Background
+The aim of this analysis is to investigate the effects of supplements OJ vs. VC and dosage level on tooth growth using the ToothGrowth data in the R datasets package.
+
+To that end, we will run hypotheses to test whether OJ is a more effective supplement than VC for tooth growth in guinea pigs at different levels of dosages.
+
+```{r echo=FALSE, message=FALSE}
+data("ToothGrowth")
+library(ggplot2)
+library(dplyr)
+```
+
+### Observations
+As we can see in the following chart, regardless of the supplement used, higher dosage levels does help guinea pigs' teeth growth. However, it is fairly clear at dosage levels 0.5 and 1 that OJ appears to be a more effective supplement for guinea pigs' tooth growth. At dosage level 2, there doesn't appear to be any difference between the two supplements. These observations are borne out when we run unpaired two-sample t-tests on the sample data.
+``` {r}
+ggplot(ToothGrowth, aes(x=dose, y=len, color=supp)) + 
+    geom_point(size=5) + 
+    labs(x="Dose", y="Tooth Length", color="Supplement") + 
+    theme_bw()
+```
+
+Looking at the different levels of dosages of supplements as a whole, OJ does not appear to be more effective than VC in lengthening guinea pigs' teeth. As we can see, the p-value is just above 5%, which lies outside the 95% confidence interval that OJ is a more effective supplement.
+``` {r}
+t.test(len ~ supp, data=ToothGrowth)
+```
+
+At the dosage level of 0.5 and 1 though, OJ does appear to be more effective than VC. The 95% confidence intervals lie comfortably above 0, our null hypothesis that there isn't any difference between the dosages.
+``` {r}
+d0.5 <- filter(ToothGrowth, dose==0.5)
+t.test(len ~ supp, data=d0.5)
+d1   <- filter(ToothGrowth, dose==1)
+t.test(len ~ supp, data=d1)
+```
+
+At dosage level 2 however, the 95% confidence interval contains 0, which is our null hypothesis that there isn't any difference between the dosages. Consequently, we cannot say with confidence that there is a difference between the two supplements.
+``` {r}
+d2   <- filter(ToothGrowth, dose==2)
+t.test(len ~ supp, data=d2)
+```

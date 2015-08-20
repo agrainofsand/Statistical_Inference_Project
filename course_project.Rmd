@@ -17,7 +17,7 @@ set.seed(1234)
 nosim <- 1000        
 sampleSize <- 40 
 lambda <- 0.2   
-dist <- matrix(rexp(sampleSize * nosim, rate = lambda), ncol = sampleSize, nrow=nosim)
+dist <- matrix(rexp(sampleSize * nosim, rate = 1/lambda), ncol = sampleSize, nrow=nosim)
 dist.means <- rowMeans(dist) 
 ```
 

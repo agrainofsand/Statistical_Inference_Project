@@ -1,28 +1,39 @@
 # Statistical Inference Course Project
 ## Overview
-This is a Coursera Statistical Inference project in which the aim is to compare the exponential distribution with lambda = 0.2 and compare it against the Central Limit Theorem using 1000 simulations of the averages of 40 exponentials.
-
-Illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials.  You should
-1. Show the sample mean and compare it to the theoretical mean of the distribution.
-2. Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
-3. Show that the distribution is approximately normal.
-
-In point 3, focus on the difference between the distribution of a large collection of random exponentials and the distribution of a large collection of averages of 40 exponentials. 
+This is a Coursera Statistical Inference project which aims to compare the distribution of the average of 40 exponentials with lambda = 0.2 simulated 1000 times against the Central Limit Theorem (CLT). The CLT states that in general, the arithmetic mean of a sufficiently large number of iterates of independent random variables, each with a well-defined expected value and well-defined variance, will be approximately normally distributed, regardless of the underlying distribution.
 
 ## Setting up the Simulations
 ```{r message=FALSE}
 library(ggplot2)
 
 set.seed(1234)
-nosim <- 1000        
-sampleSize <- 40 
-lambda <- 0.2   
-dist <- matrix(rexp(sampleSize * nosim, rate = 1/lambda), ncol = sampleSize, nrow=nosim)
-dist.means <- rowMeans(dist) 
+nosim = 1000
+sampleSize = 40
+lambda = 0.2
+dist.means = (apply(matrix(rexp(nosim * sampleSize, lambda), nosim), 1, mean))
 ```
 
 ## Sample Means vs. Theoretical Means
+``` {r}
+theo_mean = 1 / lambda
+qplot(dist.means, geom="histogram", fill=I("green"), binwidth=0.2) + geom_vline(xintercept=theo_mean, linetype="longdash") + theme_bw()
+```
+
+We know that an exponential distribution looks nothing like the normal distribution. And yet, we see from the above chart that after a 1000 simulations of the averages of 40 exponentials, the distribution of averages begins to approach that of a normal distribution. The theoretical mean (vertical dashed line), given by 1 / lamda is `r theo_mean`, falls near the center of our simulated distribution of sample means, which is `r round(mean(dist.means),2)`.
 
 ## Sample Variance vs. Theoretical Variance
+```{r}
+theo_var = (1 / lambda^2) / sampleSize
+```
+
+The theoretical variance, given by (1 / lamda^2) / n is `r theo_var`, is fairly close to our sample variance, `r round(var(dist.means),3)`.
 
 ## Distribution
+``` {r}
+ggplot(data.frame(dist.means), aes(x=dist.means)) + geom_histogram(aes(y=..density..), fill="green", binwidth=0.2) + geom_density(color="black", size=1) + geom_vline(xintercept=theo_mean, linetype="longdash", color="blue") + theme_bw() + stat_function(fun = dnorm, args = list(mean = 5, sd = 0.625), color="blue", size=1)
+
+ci = mean(dist.means) + c(-1,1) * 1.96 * sd(dist.means)/sqrt(sampleSize)
+theo_ci = theo_mean + c(-1,1) * 1.96 * sqrt(theo_var)/sampleSize
+```
+
+As we can see from the above chart, the fitted distribution of the samples (black line) looks approximately normal (blue line). The 95% confidence interval of the sample distribution is `r round(ci[1],2)` to `r round(ci[2],2)`, which is fairly close to the 95% confidence interval for the theoretical distribution, which is `r round(theo_ci[1],2)` to `r round(theo_ci[2],2)`.
